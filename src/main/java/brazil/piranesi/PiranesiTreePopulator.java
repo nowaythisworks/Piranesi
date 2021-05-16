@@ -21,14 +21,13 @@ public class PiranesiTreePopulator extends BlockPopulator {
 	public ArrayList<String> parsedBlockData = new ArrayList<String>();
 	
 	private int heightModifier = 0;
-	private boolean isOutOfBounds = false;
 	
 	private static Set<ChunkCoords> chunks = ConcurrentHashMap.newKeySet();
 	private static Set<ChunkCoords> unpopulatedChunks = ConcurrentHashMap.newKeySet();
 	
 	public void grabStructureData()
 	{
-		int r = new Random().nextInt(1000);
+		final int r = new Random().nextInt(1000);
 		if (r <= 1) {
 			parsedBlockData = StructureLoader.buildData.get(2);
 			heightModifier = 0;
@@ -45,9 +44,8 @@ public class PiranesiTreePopulator extends BlockPopulator {
 	}
 	
 	@Override
-	public void populate(World world, Random random, Chunk source)
+	public void populate(final World world, final Random random, final Chunk source)
 	{
-    	//Bukkit.getLogger().info("Called");
 		/**
 		 * thanks to the works of:
 		 * mbmorris, MiniDigger, and MD_5,
@@ -58,9 +56,9 @@ public class PiranesiTreePopulator extends BlockPopulator {
 		 * chunks.
 		 */
 		
-		int posX = source.getX();
-		int posZ = source.getZ();
-		ChunkCoords c = new ChunkCoords(posX, posZ);
+		final int posX = source.getX();
+		final int posZ = source.getZ();
+		final ChunkCoords c = new ChunkCoords(posX, posZ);
 		
 		if (!chunks.contains(c))
 		{
@@ -77,11 +75,11 @@ public class PiranesiTreePopulator extends BlockPopulator {
 		Bukkit.getLogger().info("Above: " + chunks.contains(c.above()));
 		Bukkit.getLogger().info("Below: " + chunks.contains(c.below()));*/
 		
-		Iterator<ChunkCoords> iterator = unpopulatedChunks.iterator();
+		final Iterator<ChunkCoords> iterator = unpopulatedChunks.iterator();
 		
 		while (iterator.hasNext())
 		{
-			ChunkCoords chunk = iterator.next();
+			final ChunkCoords chunk = iterator.next();
 			
 			//Bukkit.getLogger().info(chunk.toString());
 			if (ChunkPopulationReady(chunk))
@@ -93,7 +91,7 @@ public class PiranesiTreePopulator extends BlockPopulator {
 		}
 	}
 
-	private boolean ChunkPopulationReady(ChunkCoords c) {
+	private boolean ChunkPopulationReady(final ChunkCoords c) {
 		if	(chunks.contains(c.left()) && chunks.contains(c.left().left()) && chunks.contains(c.left().left().left()) && 
 			chunks.contains(c.right()) && chunks.contains(c.right().right()) && chunks.contains(c.right().right().right()) && 
 			chunks.contains(c.upperLeft()) && chunks.contains(c.upperLeft().upperLeft()) && chunks.contains(c.upperLeft().upperLeft().upperLeft()) && 
@@ -108,24 +106,21 @@ public class PiranesiTreePopulator extends BlockPopulator {
 		return false;
 	}
 
-	private void placeStructures(World world, Random r, Chunk source) {
+	private void placeStructures(final World world, final Random r, final Chunk source) {
 		int posX = source.getX() * 16;
 		int posZ = source.getZ() * 16;
 		
-		if (!isOutOfBounds)
-		{
-			posX += new Random().nextInt(8)-4;
-			posZ += new Random().nextInt(8)-4;
-		}
+		posX += new Random().nextInt(8)-4;
+		posZ += new Random().nextInt(8)-4;
 		
-		int height = PiranesiChunkGenerator.getNoiseTopPosition(posX, posZ, world);
+		final int height = PiranesiChunkGenerator.getNoiseTopPosition(posX, posZ, world);
 		
 		if (height > 255)
 		{
 			return;
 		}
 		
-		Location heightLocation1 = new Location(world, posX, height, posZ);
+		final Location heightLocation1 = new Location(world, posX, height, posZ);
 		
 		grabStructureData();
 		
@@ -134,43 +129,35 @@ public class PiranesiTreePopulator extends BlockPopulator {
 			Bukkit.getLogger().warning("Failed to load parsedBlockData");
 			return;
 		}
-
-		BlockData data;
 		
 		for (int i = 0; i < parsedBlockData.size(); i++)
 		{
-			String currentLine = parsedBlockData.get(i);
+			final String currentLine = parsedBlockData.get(i);
 			if (currentLine != "")
 			{
-				String[] lineContents = currentLine.split("\\|");
+				final String[] lineContents = currentLine.split("\\|");
 
-				String currentBlockStr = lineContents[0];
-				int xpos = Integer.parseInt(lineContents[1]);
-				int ypos = Integer.parseInt(lineContents[2]) + heightModifier;
-				int zpos = Integer.parseInt(lineContents[3]);
-				Material currentBlock = getCurrentMaterial(currentBlockStr);
+				final String currentBlockStr = lineContents[0];
+				final int xpos = Integer.parseInt(lineContents[1]);
+				final int ypos = Integer.parseInt(lineContents[2]) + heightModifier;
+				final int zpos = Integer.parseInt(lineContents[3]);
+				final Material currentBlock = Material.matchMaterial(currentBlockStr);
 				if (currentBlock != null)
 				{
-					Location blockLoc1 = new Location(world, xpos, ypos, zpos).add(heightLocation1);
-					data = returnBlockData(lineContents[4]);
-					Block b1 = world.getBlockAt(blockLoc1);
+					final Location blockLoc1 = new Location(world, xpos, ypos, zpos).add(heightLocation1);
+					final BlockData data = returnBlockData(lineContents[4]);
+					final Block b1 = world.getBlockAt(blockLoc1);
 					b1.setBlockData(data);
 				}
 			}
 		}
 	}
 
-	public BlockData returnBlockData(String str)
+	public BlockData returnBlockData(final String str)
 	{
-		String blockDataAsString = str.substring(25, str.length() - 1);
+		final String blockDataAsString = str.substring(25, str.length() - 1);
 
 		return Bukkit.createBlockData(blockDataAsString);
-	}
-
-	Material getCurrentMaterial(String mat)
-	{
-		//~~~~~~~~~~~<=: I'm a Snake
-		return Material.matchMaterial(mat);
 	}
 
 }

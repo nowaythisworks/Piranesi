@@ -38,7 +38,7 @@ public final class Piranesi extends JavaPlugin implements Listener {
 	}
 
 	public void onEnable() {
-		Noise testingLayer = new Noise("Base Terrain Layer", NoiseType.Cellular, 0.0001F, FractalType.FBm, 5, 2.00F, 0.50F,
+		Noise testingLayer = new Noise("Base Terrain Layer", NoiseType.Cellular, 0.0015F, FractalType.FBm, 5, 2.00F, 0.50F,
 				-0.50F, CellularDistanceFunction.EuclideanSq, CellularReturnType.Distance2Mul, 1.00F);
 		NoiseCache.addNoiseLayer(testingLayer);
 
