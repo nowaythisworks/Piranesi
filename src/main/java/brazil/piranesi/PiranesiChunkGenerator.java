@@ -4,23 +4,16 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.data.Bisected;
 import org.bukkit.block.data.Bisected.Half;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
-import org.bukkit.plugin.java.JavaPlugin;
 
 
-public class PiranesiChunkGenerator extends ChunkGenerator{
-	
-	JavaPlugin plugin;
-	
-	public void setPlugin(JavaPlugin p)
-	{
-		plugin = p;
-	}
+public class PiranesiChunkGenerator extends ChunkGenerator {
 	
     @Override
     public List<BlockPopulator> getDefaultPopulators(World world) {
@@ -30,14 +23,28 @@ public class PiranesiChunkGenerator extends ChunkGenerator{
 	@Override
 	public ChunkData generateChunkData(World world, Random random, int chunkX, int chunkZ, BiomeGrid biome)
 	{
-		FastNoiseLite noise = NoiseCache.loadedNoise.get(0).getNoise();
 		
 		Random r = new Random();
 
-		FastNoiseLite biomeData = NoiseCache.loadedNoise.get(1).getNoise();
 		/**
-		 * BiomeData Min/Max is -1 to 1!!!
+		 * # BIOMEDATA
+		 * BiomeData is a noise profile that has information about
+		 * WHERE biomes are. It is a large map of Biomes.
+		 * It is always the 0th index of the NoiseCache.
+		 * 
+		 * The BIOMEDATA is consistently within range -1 to 1,
+		 * excluding a frequency greater than 1.
+		 * 
+		 * The default frequency is 0.002.
 		 */
+		FastNoiseLite biomeData = NoiseCache.loadedNoise.get(0).getNoise();
+		
+		/**
+		 * # NOISE
+		 * The following will collect all other instances
+		 * of NoiseCache with a total of NoiseCache.size();
+		 */
+		FastNoiseLite noise = NoiseCache.loadedNoise.get(1).getNoise();
 		
 		/* Init Defaults */
 		
@@ -57,32 +64,24 @@ public class PiranesiChunkGenerator extends ChunkGenerator{
 				int sealevel = 85;
 				
 				float biomeValue = biomeData.GetNoise(chunkX*16+X, chunkZ*16+Z);
-				biomeValue *= -1;
 				
 				float pointValue = noise.GetNoise(chunkX*16+X, chunkZ*16+Z);
+				Bukkit.getLogger().info(pointValue + "");
 
 				currentHeight = (int) (Math.abs(pointValue) * 175) - 175;
 				
 				Material currentMaterial = Material.BLUE_ICE;
 				//1 - 1.6
-				if (biomeValue < 1.1)
+				if (pointValue < -0.6)
 				{
 					currentMaterial = Material.WATER;
 				}
-				else if (biomeValue < 1.2)
-				{
-					currentMaterial = Material.GREEN_WOOL;
-				}
-				else if (biomeValue < 1.3)
-				{
-					currentMaterial = Material.SANDSTONE;
-				}
-				else if (biomeValue < 1.4)
+				else if (pointValue < 0)
 				{
 					currentMaterial = Material.GRAVEL;
 					isWater = true;
 				}
-				else if (biomeValue < 1.5)
+				else if (pointValue < 0.4)
 				{
 					currentMaterial = Material.SAND;
 					isWater = true;

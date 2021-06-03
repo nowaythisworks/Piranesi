@@ -15,7 +15,7 @@ import brazil.piranesi.FastNoiseLite.NoiseType;
 public class Noise {
 
 	FastNoiseLite noise = new FastNoiseLite();
-	NoiseIndex index;
+	private NoiseIndex index;
 
 	Noise(String layerName, NoiseType a, float freq, FractalType f, int octaves, float lacunarity, float fractalGain,
 			float fractalWeightedStrength, CellularDistanceFunction c, CellularReturnType cr, float jitter) {

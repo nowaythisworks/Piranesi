@@ -13,6 +13,15 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 import org.bukkit.plugin.java.JavaPlugin;
 
+/**
+ * 
+ * (Outdated) janky erosion simulation test. Kept here for reference.
+ * Did put out some good results tho.
+ * Excluded from build.
+ * 
+ * @author brazil
+ *
+ */
 public class ErosionSimulator {
 	
 	ChunkData simChunk;
@@ -36,7 +45,7 @@ public class ErosionSimulator {
 	
 	List<Location> erodedBlocks = new ArrayList<Location>();
 	
-	public ErosionSimulator(ChunkData b, World w, JavaPlugin p, int height)
+	public ErosionSimulator(final ChunkData b, final World w, final JavaPlugin p, final int height)
 	{
 		dropHeight = height;
 		plugin = p;
@@ -44,16 +53,14 @@ public class ErosionSimulator {
 		simChunk = b;
 	}
 	
-	public ErosionSimulator(Block b, World w, JavaPlugin p)
+	public ErosionSimulator(final Block b, final World w, final JavaPlugin p)
 	{
 		raindrop = b;
 		world = w;
 		plugin = p;
 	}
 	
-	public void GenerateDropPasses_Realtime(boolean beginCycle) {
-		
-		SplittableRandom indexer = new SplittableRandom();
+	public void GenerateDropPasses_Realtime(final boolean beginCycle) {
 		
 		passRT.clear();
 		
@@ -75,8 +82,8 @@ public class ErosionSimulator {
 		
 		rdlRT = raindrop.getLocation();
 		
-		int X = (int) rdlRT.getX();
-		int Z = (int) rdlRT.getZ();
+		final int X = (int) rdlRT.getX();
+		final int Z = (int) rdlRT.getZ();
 		int Y = (int) rdlRT.getY() - 1;
 		
 		if (Y <= 0)
@@ -103,9 +110,9 @@ public class ErosionSimulator {
 		}
 	}
 	
-	public List<Location> GenerateDropPasses(boolean beginCycle) {
+	public List<Location> GenerateDropPasses(final boolean beginCycle) {
 		
-		SplittableRandom indexer = new SplittableRandom();
+		final SplittableRandom indexer = new SplittableRandom();
 		
 		pass.clear();
 		
@@ -127,8 +134,8 @@ public class ErosionSimulator {
 		
 		rdl = new Location(world, indexer.nextInt(0, 16), dropHeight, indexer.nextInt(0,16));
 		
-		int X = (int) rdl.getX();
-		int Z = (int) rdl.getZ();
+		final int X = (int) rdl.getX();
+		final int Z = (int) rdl.getZ();
 		int Y = (int) rdl.getY() - 1;
 		
 		if (Y <= 0)
@@ -168,8 +175,8 @@ public class ErosionSimulator {
 			
 			for (int k = 0; k < pass.size(); k++)
 			{
-				Location cur = pass.get(k);
-				BlockData b = simChunk.getBlockData(cur.getBlockX(), cur.getBlockY(), cur.getBlockZ());
+				final Location cur = pass.get(k);
+				final BlockData b = simChunk.getBlockData(cur.getBlockX(), cur.getBlockY(), cur.getBlockZ());
 				
 				if (!b.getMaterial().equals(Material.AIR))
 				{
@@ -180,7 +187,7 @@ public class ErosionSimulator {
 			
 			if (nextIterationPosition != null)
 			{
-				for (Location l : erodedBlocks)
+				for (final Location l : erodedBlocks)
 				{
 					simChunk.setBlock(l.getBlockX(), l.getBlockY(), l.getBlockZ(), Material.AIR);
 					simChunk.setBlock(l.getBlockX(), l.getBlockY()-1, l.getBlockZ(), Material.AIR);
@@ -205,10 +212,10 @@ public class ErosionSimulator {
 			
 			for (int k = 0; k < passRT.size(); k++)
 			{
-				Location tr = passRT.get(k);
-				Location tl = new Location(world, tr.getBlockX(), tr.getBlockY(), tr.getBlockZ());
-				Block b = passRT.get(k).getBlock();
-				Block t = passRT.get(k).getBlock();
+				final Location tr = passRT.get(k);
+				final Location tl = new Location(world, tr.getBlockX(), tr.getBlockY(), tr.getBlockZ());
+				final Block b = passRT.get(k).getBlock();
+				final Block t = passRT.get(k).getBlock();
 				Bukkit.getLogger().warning(b.getType().toString());
 				if (!b.getType().equals(Material.AIR) && tl.getBlock().getType().equals(Material.AIR))
 				{

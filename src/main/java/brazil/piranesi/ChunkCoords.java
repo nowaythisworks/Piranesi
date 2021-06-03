@@ -1,46 +1,44 @@
 package brazil.piranesi;
 
-import org.bukkit.Bukkit;
-
 public class ChunkCoords {
 	public int X;
 	public int Z;
 	
-	public ChunkCoords(int cX, int cZ)
+	ChunkCoords(int cX, int cZ)
 	{
 		X = cX;
 		Z = cZ;
 	}
     
-    public ChunkCoords left() {
+	public ChunkCoords left() {
         return new ChunkCoords(X - 1, Z);
     }
    
-    public ChunkCoords right() {
+	public ChunkCoords right() {
         return new ChunkCoords(X + 1, Z);
     }
    
-    public ChunkCoords above() {
+	public ChunkCoords above() {
         return new ChunkCoords(X, Z - 1);
     }
    
-    public ChunkCoords below() {
+	public ChunkCoords below() {
         return new ChunkCoords(X, Z + 1);
     }
    
-    public ChunkCoords upperLeft() {
+	public ChunkCoords upperLeft() {
         return new ChunkCoords(X - 1, Z - 1);
     }
    
-    public ChunkCoords upperRight() {
+	public ChunkCoords upperRight() {
         return new ChunkCoords(X + 1, Z - 1);
     }
    
-    public ChunkCoords lowerLeft() {
+	public ChunkCoords lowerLeft() {
         return new ChunkCoords(X - 1, Z + 1);
     }
    
-    public ChunkCoords lowerRight() {
+	public ChunkCoords lowerRight() {
         return new ChunkCoords(X + 1, Z + 1);
     }
     
