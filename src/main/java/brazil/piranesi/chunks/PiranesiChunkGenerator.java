@@ -105,20 +105,18 @@ public class PiranesiChunkGenerator extends ChunkGenerator {
 				 * 0.0625 = percent, 6.25% bottom is going to be the sand
 				 * 
 				 */
-				Bukkit.getLogger().info("PV: " + pointValue + "   |   Max*1.125: " + (max * 1.125) + "");
-				
-				
-				if (pointValue < max * 1.125)
-				{
-					currentMaterial = Material.SAND;
-				}
-				else if (pointValue < max * 0.625)
+				//  -1.4102119125 : -1.2984704
+				// -1.3953264 * 1.125 = -1.5697422
+				if (pointValue > -1.3)
 				{
 					currentMaterial = Material.GRAVEL;
 				}
+				else if (pointValue > -1.5)
+				{
+					currentMaterial = Material.SAND;
+				}
 				else
 				{
-					Bukkit.getLogger().info("PV: " + pointValue + " | Max*0.06: " + (max * 0.0625) + "");
 					currentMaterial = Material.GRASS_BLOCK;
 					Double d = r.nextDouble();
 					if (d < 0.15)
@@ -131,7 +129,6 @@ public class PiranesiChunkGenerator extends ChunkGenerator {
 					}
 					else if (d < 0.35)
 					{
-						
 						chunk.setBlock(X, currentHeight, Z, Material.TALL_GRASS);
 						chunk.setBlock(X, currentHeight+1, Z, topGrassData);
 					}

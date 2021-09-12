@@ -23,7 +23,7 @@
 		      <configuration>
 		        <target>
 		          <copy file="${project.build.directory}/${project.build.finalName}.jar"
-		                todir="C:\Users\lespa\Desktop\Test Server\Nether Generator\plugins" />
+		                todir="E:\Test Server\Piranesi Developer Testing\plugins" />
 		        </target>
 		      </configuration>
 		      <goals>
