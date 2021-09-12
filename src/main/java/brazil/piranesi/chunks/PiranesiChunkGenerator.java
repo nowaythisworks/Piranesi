@@ -9,9 +9,12 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.data.Bisected;
 import org.bukkit.block.data.Bisected.Half;
+import org.bukkit.generator.BiomeProvider;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.generator.WorldInfo;
 
+import brazil.piranesi.biome.PiranesiBiomeProvider;
 import brazil.piranesi.blockpopulation.PiranesiTreePopulator;
 import brazil.piranesi.noise.FastNoiseLite;
 import brazil.piranesi.noise.NoiseCache;
@@ -22,9 +25,15 @@ public class PiranesiChunkGenerator extends ChunkGenerator {
 
 	@Override
     public List<BlockPopulator> getDefaultPopulators(World world) {
-		// TODO invalid response 
+		// TODO invalid response
         return Arrays.asList((BlockPopulator) new PiranesiTreePopulator());
     }
+	
+	@Override
+	public BiomeProvider getDefaultBiomeProvider(WorldInfo info)
+	{
+		return new PiranesiBiomeProvider();
+	}
     
 	@Override
 	public ChunkData generateChunkData(World world, Random random, int chunkX, int chunkZ, BiomeGrid biome)

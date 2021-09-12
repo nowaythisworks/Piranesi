@@ -4,9 +4,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
+import org.bukkit.generator.BiomeProvider;
 import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.generator.WorldInfo;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import brazil.piranesi.biome.PiranesiBiomeProvider;
 import brazil.piranesi.chunks.PiranesiChunkGenerator;
 import brazil.piranesi.commands.DebugCommands;
 import brazil.piranesi.noise.Noise;
