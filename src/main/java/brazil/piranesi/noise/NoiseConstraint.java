@@ -1,7 +1,5 @@
 package brazil.piranesi.noise;
 
-import org.bukkit.Bukkit;
-
 public class NoiseConstraint {
 	private float min;
 	private float max;

@@ -104,6 +104,7 @@ public class PiranesiChunkGenerator extends ChunkGenerator {
 				 * 
 				 */
 				
+				// Testing (Forest) Biome Constraints:
 				
 				if (pointValue > max * 0.0625)
 				{

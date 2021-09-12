@@ -206,9 +206,7 @@ public class ErosionSimulator {
 	{
 		for (int i = 0; i < 30; i++)
 		{
-			Bukkit.getLogger().warning("1");
 			Location nextIterationPosition = null;
-			Bukkit.getLogger().warning("2");
 			
 			for (int k = 0; k < passRT.size(); k++)
 			{
@@ -225,10 +223,8 @@ public class ErosionSimulator {
 			
 			if (nextIterationPosition != null)
 			{
-				Bukkit.getLogger().warning("6");
 				world.getBlockAt(nextIterationPosition).setType(Material.LAPIS_BLOCK);
 				raindrop = world.getBlockAt(nextIterationPosition);
-				Bukkit.getLogger().warning("7");
 			}
 
 			GenerateDropPasses_Realtime(false);

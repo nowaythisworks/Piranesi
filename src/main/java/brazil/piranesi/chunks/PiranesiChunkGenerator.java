@@ -22,6 +22,7 @@ public class PiranesiChunkGenerator extends ChunkGenerator {
 
 	@Override
     public List<BlockPopulator> getDefaultPopulators(World world) {
+		// TODO invalid response 
         return Arrays.asList((BlockPopulator) new PiranesiTreePopulator());
     }
     

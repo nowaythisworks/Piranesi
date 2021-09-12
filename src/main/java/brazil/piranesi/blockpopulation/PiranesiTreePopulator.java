@@ -20,6 +20,13 @@ import brazil.piranesi.chunks.ChunkCoords;
 import brazil.piranesi.chunks.PiranesiChunkGenerator;
 import brazil.piranesi.structures.StructureLoader;
 
+/**
+ * @author Brazil
+ * 
+ * Chunk Readiness Calculator
+ * Absolute atrocity of old code
+ * Kept for reference
+ */
 public class PiranesiTreePopulator extends BlockPopulator {
 	
 	public ArrayList<String> parsedBlockData = new ArrayList<String>();
@@ -85,10 +92,8 @@ public class PiranesiTreePopulator extends BlockPopulator {
 		{
 			final ChunkCoords chunk = iterator.next();
 			
-			//Bukkit.getLogger().info(chunk.toString());
 			if (ChunkPopulationReady(chunk))
 			{
-            	//Bukkit.getLogger().info("Structure Placing Available");
 				iterator.remove();
 				placeStructures(world,random,world.getChunkAt(chunk.X, chunk.Z));
 			}
@@ -96,6 +101,7 @@ public class PiranesiTreePopulator extends BlockPopulator {
 	}
 
 	private boolean ChunkPopulationReady(final ChunkCoords c) {
+		// AAAAAAAH OH MY FUCKING GOD FIX THIS
 		if	(chunks.contains(c.left()) && chunks.contains(c.left().left()) && chunks.contains(c.left().left().left()) && 
 			chunks.contains(c.right()) && chunks.contains(c.right().right()) && chunks.contains(c.right().right().right()) && 
 			chunks.contains(c.upperLeft()) && chunks.contains(c.upperLeft().upperLeft()) && chunks.contains(c.upperLeft().upperLeft().upperLeft()) && 
