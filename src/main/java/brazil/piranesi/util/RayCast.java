@@ -1,4 +1,4 @@
-package brazil.piranesi;
+package brazil.piranesi.util;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;

@@ -1,4 +1,4 @@
-package brazil.piranesi;
+package brazil.piranesi.blockpopulation;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -15,6 +15,10 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.generator.BlockPopulator;
+
+import brazil.piranesi.chunks.ChunkCoords;
+import brazil.piranesi.chunks.PiranesiChunkGenerator;
+import brazil.piranesi.structures.StructureLoader;
 
 public class PiranesiTreePopulator extends BlockPopulator {
 	
@@ -117,6 +121,7 @@ public class PiranesiTreePopulator extends BlockPopulator {
 		
 		if (height > 255)
 		{
+			Bukkit.getLogger().warning("DEBUG: Height Too High");
 			return;
 		}
 		

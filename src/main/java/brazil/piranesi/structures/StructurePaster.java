@@ -1,4 +1,4 @@
-package brazil.piranesi;
+package brazil.piranesi.structures;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,17 +10,10 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.plugin.java.JavaPlugin;
 
 public class StructurePaster {
 
 	public static ArrayList<String> structureData = new ArrayList<String>();
-	public JavaPlugin plugin;
-
-	public StructurePaster(JavaPlugin pl) 
-	{
-		plugin = pl;
-	}
 	
 	public void loadStructureData(File fileName) throws FileNotFoundException
 	{
@@ -41,10 +34,9 @@ public class StructurePaster {
 		}
 	}
 
-	public boolean pasteOp(Location playerLoc, World world)
+	public boolean pasteOp(Location playerLoc)
 	{
 		if (structureData != null) {
-			Piranesi.taskCount++;
 			BlockData data;
 			for (int i = 0; i < structureData.size(); i++)
 			{
@@ -57,7 +49,7 @@ public class StructurePaster {
 					int xpos = Integer.parseInt(lineContents[1]);
 					int ypos = Integer.parseInt(lineContents[2]);
 					int zpos = Integer.parseInt(lineContents[3]);
-					Location blockLoc = new Location(world, xpos, ypos, zpos).add(playerLoc);
+					Location blockLoc = new Location(playerLoc.getWorld(), xpos, ypos, zpos).add(playerLoc);
 					Material currentBlock = getCurrentMaterial(currentBlockStr);
 					if (currentBlock != null)
 					{

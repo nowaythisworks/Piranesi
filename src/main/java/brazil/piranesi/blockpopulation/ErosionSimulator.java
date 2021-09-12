@@ -1,4 +1,4 @@
-package brazil.piranesi;
+package brazil.piranesi.blockpopulation;
 
 import java.util.ArrayList;
 import java.util.List;

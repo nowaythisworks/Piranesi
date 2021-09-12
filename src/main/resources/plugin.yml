@@ -1,5 +1,11 @@
 name: Piranesi
 main: brazil.piranesi.Piranesi
 version: 1.0
-api-version: 1.16
+api-version: 1.17
 load: startup
+commands:
+  pdebug:
+    description: Debug for Piranesi
+    usage: /<command><args>
+    aliases:
+      - pdeb

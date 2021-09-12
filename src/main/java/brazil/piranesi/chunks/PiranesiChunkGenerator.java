@@ -1,4 +1,4 @@
-package brazil.piranesi;
+package brazil.piranesi.chunks;
 
 import java.util.Arrays;
 import java.util.List;
@@ -12,12 +12,17 @@ import org.bukkit.block.data.Bisected.Half;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 
+import brazil.piranesi.blockpopulation.PiranesiTreePopulator;
+import brazil.piranesi.noise.FastNoiseLite;
+import brazil.piranesi.noise.NoiseCache;
+import brazil.piranesi.noise.NoiseConstraint;
+
 
 public class PiranesiChunkGenerator extends ChunkGenerator {
-	
-    @Override
+
+	@Override
     public List<BlockPopulator> getDefaultPopulators(World world) {
-        return Arrays.asList((BlockPopulator)new PiranesiTreePopulator());
+        return Arrays.asList((BlockPopulator) new PiranesiTreePopulator());
     }
     
 	@Override
@@ -33,10 +38,11 @@ public class PiranesiChunkGenerator extends ChunkGenerator {
 		 * It is always the 0th index of the NoiseCache.
 		 * 
 		 * The BIOMEDATA is consistently within range -1 to 1,
-		 * excluding a frequency greater than 1.
+		 * unless there is a frequency greater than 1.
 		 * 
-		 * The default frequency is 0.002.
+		 * The default frequency is 2/1000 (0.002).
 		 */
+		
 		FastNoiseLite biomeData = NoiseCache.loadedNoise.get(0).getNoise();
 		
 		/**
@@ -46,9 +52,24 @@ public class PiranesiChunkGenerator extends ChunkGenerator {
 		 */
 		FastNoiseLite noise = NoiseCache.loadedNoise.get(1).getNoise();
 		
+		/**
+		 * # FIND NOISE CONSTRAINTS
+		 * The following will calculate the noise limits (constraints of height)
+		 * of the base terrain layer's noise. It will be based off of the first 10
+		 * chunks that are generated from a left-to-right perspective.
+		 * 
+		 * This new constraint method IS 100% because it is on a per-chunk basis.
+		 */
+		
+		NoiseConstraint constraint = new NoiseConstraint(noise, chunkX, chunkZ);
+		float min = constraint.getMinimum();
+		float max = constraint.getMaximum();
+		
 		/* Init Defaults */
 		
 		int currentHeight = 70;
+		
+	    final int SEA_LEVEL = 86;
 		
 		//Chunk Generator
 		ChunkData chunk = createChunkData(world);
@@ -56,38 +77,48 @@ public class PiranesiChunkGenerator extends ChunkGenerator {
 		Bisected topGrassData = (Bisected) Material.TALL_GRASS.createBlockData();
 		topGrassData.setHalf(Half.TOP);
 		
+		boolean pasteInChunk = false;
+		if ((Math.random() * 100) < 5) pasteInChunk = true;
+		
 		for (int X = 0; X < 16; X++)
 		{
 			for (int Z = 0; Z < 16; Z++)
 			{
-				boolean isWater = false;
-				int sealevel = 85;
 				
 				float biomeValue = biomeData.GetNoise(chunkX*16+X, chunkZ*16+Z);
 				
 				float pointValue = noise.GetNoise(chunkX*16+X, chunkZ*16+Z);
-				Bukkit.getLogger().info(pointValue + "");
 
 				currentHeight = (int) (Math.abs(pointValue) * 175) - 175;
 				
 				Material currentMaterial = Material.BLUE_ICE;
-				//1 - 1.6
-				if (pointValue < -0.6)
-				{
-					currentMaterial = Material.WATER;
-				}
-				else if (pointValue < 0)
-				{
-					currentMaterial = Material.GRAVEL;
-					isWater = true;
-				}
-				else if (pointValue < 0.4)
+				
+				
+				// -1.6 to 0
+				
+				// so the percent is the second numbe
+				
+				/*
+				 * # Example:
+				 * 
+				 * `pointvalie > max * 0.0625`
+				 * 0.0625 = percent, 6.25% bottom is going to be the sand
+				 * 
+				 */
+				Bukkit.getLogger().info("PV: " + pointValue + "   |   Max*1.125: " + (max * 1.125) + "");
+				
+				
+				if (pointValue < max * 1.125)
 				{
 					currentMaterial = Material.SAND;
-					isWater = true;
+				}
+				else if (pointValue < max * 0.625)
+				{
+					currentMaterial = Material.GRAVEL;
 				}
 				else
 				{
+					Bukkit.getLogger().info("PV: " + pointValue + " | Max*0.06: " + (max * 0.0625) + "");
 					currentMaterial = Material.GRASS_BLOCK;
 					Double d = r.nextDouble();
 					if (d < 0.15)
@@ -114,7 +145,13 @@ public class PiranesiChunkGenerator extends ChunkGenerator {
 				for (int i = 1; i < currentHeight; i++)
 				{
 					chunk.setBlock(X, i, Z, currentMaterial);
-					if (isWater) chunk.setBlock(X, sealevel, Z, Material.WATER);
+					if (currentHeight < SEA_LEVEL)
+					{
+						for (int s = currentHeight; s < SEA_LEVEL; s++)
+						{
+							chunk.setBlock(X, s, Z, Material.WATER);
+						}
+					}
 				}
 				
 				chunk.setBlock(X, 0, Z, Material.BEDROCK);
@@ -128,10 +165,10 @@ public class PiranesiChunkGenerator extends ChunkGenerator {
 	{
 		FastNoiseLite noise = NoiseCache.loadedNoise.get(0).getNoise();
 		int height = (int) (Math.abs(noise.GetNoise(posX, posZ) * 175) - 175);
-		if (height <= 86)
+		/*if (height <= 86)
 		{
 			return 300;
-		}
+		}*/
 		return height;
 	}
 }

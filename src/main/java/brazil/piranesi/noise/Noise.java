@@ -1,9 +1,9 @@
-package brazil.piranesi;
+package brazil.piranesi.noise;
 
-import brazil.piranesi.FastNoiseLite.CellularDistanceFunction;
-import brazil.piranesi.FastNoiseLite.CellularReturnType;
-import brazil.piranesi.FastNoiseLite.FractalType;
-import brazil.piranesi.FastNoiseLite.NoiseType;
+import brazil.piranesi.noise.FastNoiseLite.CellularDistanceFunction;
+import brazil.piranesi.noise.FastNoiseLite.CellularReturnType;
+import brazil.piranesi.noise.FastNoiseLite.FractalType;
+import brazil.piranesi.noise.FastNoiseLite.NoiseType;
 
 /**
  * Allows quick initialization of a new FastNoiseLite unit, using params set by
@@ -17,7 +17,7 @@ public class Noise {
 	FastNoiseLite noise = new FastNoiseLite();
 	private NoiseIndex index;
 
-	Noise(String layerName, NoiseType a, float freq, FractalType f, int octaves, float lacunarity, float fractalGain,
+	public Noise(String layerName, NoiseType a, float freq, FractalType f, int octaves, float lacunarity, float fractalGain,
 			float fractalWeightedStrength, CellularDistanceFunction c, CellularReturnType cr, float jitter) {
 		/* Base Terrain Noise Generator */
 		noise.SetNoiseType(a);

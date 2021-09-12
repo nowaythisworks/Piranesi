@@ -1,4 +1,4 @@
-package brazil.piranesi;
+package brazil.piranesi.noise;
 
 /**
  * Small description of noise information,
@@ -11,7 +11,7 @@ public class NoiseIndex {
 	public String name;
 	public int layerIndex;
 	
-	NoiseIndex(String n)
+	public NoiseIndex(String n)
 	{
 		name = n;
 	}

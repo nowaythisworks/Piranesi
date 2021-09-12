@@ -1,10 +1,10 @@
-package brazil.piranesi;
+package brazil.piranesi.chunks;
 
 public class ChunkCoords {
 	public int X;
 	public int Z;
 	
-	ChunkCoords(int cX, int cZ)
+	public ChunkCoords(int cX, int cZ)
 	{
 		X = cX;
 		Z = cZ;

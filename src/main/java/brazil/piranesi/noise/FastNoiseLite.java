@@ -1,4 +1,4 @@
-package brazil.piranesi;
+package brazil.piranesi.noise;
 
 //MIT License
 //

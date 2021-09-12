@@ -1,4 +1,4 @@
-package brazil.piranesi;
+package brazil.piranesi.structures;
 
 import java.io.File;
 import java.io.FileNotFoundException;
