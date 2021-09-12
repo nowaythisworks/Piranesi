@@ -8,5 +8,5 @@
 ![Screenshot](https://i.postimg.cc/Jz411dVd/image.png)
 ![Screenshot](https://i.postimg.cc/vHwTdzZp/image.png)
 
-## It's also got a nifty editor
+## Editor Preview
 ![Editor](https://i.postimg.cc/hj3mr78K/image.png)
