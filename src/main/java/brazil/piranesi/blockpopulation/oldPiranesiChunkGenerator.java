@@ -16,12 +16,12 @@ import brazil.piranesi.noise.NoiseCache;
 import brazil.piranesi.noise.NoiseConstraint;
 
 
-public class PiranesiChunkGenerator extends ChunkGenerator {
+public class oldPiranesiChunkGenerator extends ChunkGenerator {
 
-	@Override
+	/*@Override
     public List<BlockPopulator> getDefaultPopulators(World world) {
         return Arrays.asList((BlockPopulator) new PiranesiTreePopulator());
-    }
+    }*/
     
 	@Override
 	public ChunkData generateChunkData(World world, Random random, int chunkX, int chunkZ, BiomeGrid biome)

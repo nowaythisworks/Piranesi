@@ -16,6 +16,7 @@ import org.bukkit.generator.WorldInfo;
 
 import brazil.piranesi.biome.PiranesiBiomeProvider;
 import brazil.piranesi.blockpopulation.PiranesiTreePopulator;
+import brazil.piranesi.configurator.WorldGenConfiguration;
 import brazil.piranesi.noise.FastNoiseLite;
 import brazil.piranesi.noise.NoiseCache;
 import brazil.piranesi.noise.NoiseConstraint;
@@ -23,11 +24,11 @@ import brazil.piranesi.noise.NoiseConstraint;
 
 public class PiranesiChunkGenerator extends ChunkGenerator {
 
-	@Override
+	/*@Override
     public List<BlockPopulator> getDefaultPopulators(World world) {
 		// TODO invalid response
         return Arrays.asList((BlockPopulator) new PiranesiTreePopulator());
-    }
+    }*/
 	
 	@Override
 	public BiomeProvider getDefaultBiomeProvider(WorldInfo info)
@@ -53,14 +54,14 @@ public class PiranesiChunkGenerator extends ChunkGenerator {
 		 * The default frequency is 2/1000 (0.002).
 		 */
 		
-		FastNoiseLite biomeData = NoiseCache.loadedNoise.get(0).getNoise();
+		FastNoiseLite biomeData = WorldGenConfiguration.layerData.get(0).getNoiseProfile().getNoise();
 		
 		/**
-		 * # NOISE
+		 * # WORLD SHAPE
 		 * The following will collect all other instances
 		 * of NoiseCache with a total of NoiseCache.size();
 		 */
-		FastNoiseLite noise = NoiseCache.loadedNoise.get(1).getNoise();
+		FastNoiseLite noise = WorldGenConfiguration.layerData.get(1).getNoiseProfile().getNoise();
 		
 		/**
 		 * # FIND NOISE CONSTRAINTS
@@ -170,7 +171,7 @@ public class PiranesiChunkGenerator extends ChunkGenerator {
 
 	public static int getNoiseTopPosition(int posX, int posZ, World world)
 	{
-		FastNoiseLite noise = NoiseCache.loadedNoise.get(0).getNoise();
+		FastNoiseLite noise = NoiseCache.loadedNoise.get(1).getNoise();
 		int height = (int) (Math.abs(noise.GetNoise(posX, posZ) * 175) - 175);
 		/*if (height <= 86)
 		{
