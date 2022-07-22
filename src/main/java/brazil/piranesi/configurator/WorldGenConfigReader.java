@@ -33,6 +33,7 @@ public class WorldGenConfigReader {
 	{
 		instance = p;
 		configName = fileName;
+		loadUserConfiguration();
 	}
 
 	public void loadUserConfiguration() {

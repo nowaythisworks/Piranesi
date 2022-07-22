@@ -2,46 +2,51 @@ package brazil.piranesi; //install does not clean, run clean op before building
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.event.Listener;
-import org.bukkit.generator.BiomeProvider;
+import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
-import org.bukkit.generator.WorldInfo;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import brazil.piranesi.biome.PiranesiBiomeProvider;
+import brazil.piranesi.Piranesi;
+import brazil.piranesi.blockpopulation.PiranesiTreePopulator;
 import brazil.piranesi.chunks.PiranesiChunkGenerator;
 import brazil.piranesi.commands.DebugCommands;
 import brazil.piranesi.configurator.PluginConfiguration;
 import brazil.piranesi.configurator.WorldGenConfigReader;
 import brazil.piranesi.configurator.WorldGenConfiguration;
-import brazil.piranesi.noise.Noise;
-import brazil.piranesi.noise.NoiseCache;
-import brazil.piranesi.noise.FastNoiseLite.CellularDistanceFunction;
-import brazil.piranesi.noise.FastNoiseLite.CellularReturnType;
-import brazil.piranesi.noise.FastNoiseLite.FractalType;
-import brazil.piranesi.noise.FastNoiseLite.NoiseType;
 import brazil.piranesi.structures.StructureLoader;
 
 public final class Piranesi extends JavaPlugin implements Listener {
-
+	
+	private static Piranesi instance;
 	
 	public PluginConfiguration pluginConfig;
 	private WorldGenConfiguration worldGenConfig;
 
 	private StructureLoader sl = new StructureLoader();
+	
+	public static Piranesi getInstance()
+	{
+		return instance;
+	}
 
 	// for the time being, leave this static.
 	// later, make it so that the structure paster objects are each passed into the chunkGenerator class, 
 	// or better yet, have a specific class to hold those and pass that along instead.
 
 	public void onEnable() {
-		
+
 		// Load Piranesi PLUGIN CONSTANTS config
 		loadConfig();
+		pluginConfig = new PluginConfiguration(getConfig().getString("piranesi.generatorConfig"), getConfig().getString("piranesi.chatMessagePrefix"));
 		
 		// Load Piranesi WORLD GENERATION Config
-		new WorldGenConfigReader(this, getConfig().getString("piranesi.generatorConfig")).loadUserConfiguration();
+		new WorldGenConfigReader(this, pluginConfig.GENERATOR_CONFIG);
 
 		/*Noise biomeData = new Noise("Biome Definition Layer", NoiseType.Cellular, 0.0002F, FractalType.None, 5, 2.00F, 0.50F, -0.50F,
 				CellularDistanceFunction.Hybrid, CellularReturnType.CellValue, 1.00F);
@@ -57,7 +62,7 @@ public final class Piranesi extends JavaPlugin implements Listener {
 		// Load Structures
 		Bukkit.getLogger().info("Loading " + this.getName());
 		getServer().getPluginManager().registerEvents(this, this);
-		File treeFile = new File(this.getDataFolder(), "forestTreeOne.txt");
+		File treeFile = new File(this.getDataFolder(), "Oak Tree.txt");
 		Bukkit.getLogger().info(treeFile.toString());
 
 		try {
@@ -66,6 +71,11 @@ public final class Piranesi extends JavaPlugin implements Listener {
 			Bukkit.getLogger().info("Failed to load structure for " + treeFile.getName());
 		}
         getCommand("pdebug").setExecutor(new DebugCommands(this));
+	}
+	
+	public StructureLoader getStructurePaster()
+	{
+		return sl;
 	}
 	
 	private void loadConfig()

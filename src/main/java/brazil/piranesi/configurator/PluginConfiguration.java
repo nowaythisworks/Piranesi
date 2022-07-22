@@ -8,4 +8,10 @@ package brazil.piranesi.configurator;
 public class PluginConfiguration {
 	public String GENERATOR_CONFIG;
 	public String CHAT_MESSAGE_PREFIX;
+	
+	public PluginConfiguration(String genConfig, String chatPrefix)
+	{
+		GENERATOR_CONFIG = genConfig;
+		CHAT_MESSAGE_PREFIX = chatPrefix;
+	}
 }

@@ -1,5 +1,6 @@
 package brazil.piranesi.chunks;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -14,11 +15,11 @@ import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.generator.WorldInfo;
 
+import brazil.piranesi.Piranesi;
 import brazil.piranesi.biome.PiranesiBiomeProvider;
 import brazil.piranesi.blockpopulation.PiranesiTreePopulator;
 import brazil.piranesi.configurator.WorldGenConfiguration;
 import brazil.piranesi.noise.FastNoiseLite;
-import brazil.piranesi.noise.NoiseCache;
 import brazil.piranesi.noise.NoiseConstraint;
 
 
@@ -80,16 +81,13 @@ public class PiranesiChunkGenerator extends ChunkGenerator {
 		
 		int currentHeight = 70;
 		
-	    final int SEA_LEVEL = 86;
+	    final int SEA_LEVEL = 20;
 		
 		//Chunk Generator
 		ChunkData chunk = createChunkData(world);
 		
 		Bisected topGrassData = (Bisected) Material.TALL_GRASS.createBlockData();
 		topGrassData.setHalf(Half.TOP);
-		
-		boolean pasteInChunk = false;
-		if ((Math.random() * 100) < 5) pasteInChunk = true;
 		
 		for (int X = 0; X < 16; X++)
 		{
@@ -100,7 +98,7 @@ public class PiranesiChunkGenerator extends ChunkGenerator {
 				
 				float pointValue = noise.GetNoise(chunkX*16+X, chunkZ*16+Z);
 
-				currentHeight = (int) (Math.abs(pointValue) * 175) - 175;
+				currentHeight = (int) (Math.abs(pointValue) * 100);
 				
 				Material currentMaterial = Material.BLUE_ICE;
 				
@@ -118,11 +116,11 @@ public class PiranesiChunkGenerator extends ChunkGenerator {
 				 */
 				//  -1.4102119125 : -1.2984704
 				// -1.3953264 * 1.125 = -1.5697422
-				if (pointValue > -1.3)
+				if (currentHeight < 0)
 				{
 					currentMaterial = Material.GRAVEL;
 				}
-				else if (pointValue > -1.5)
+				else if (currentHeight < 20)
 				{
 					currentMaterial = Material.SAND;
 				}
@@ -150,7 +148,7 @@ public class PiranesiChunkGenerator extends ChunkGenerator {
 				}
 				
 				
-				for (int i = 1; i < currentHeight; i++)
+				for (int i = 1; i <= currentHeight; i++)
 				{
 					chunk.setBlock(X, i, Z, currentMaterial);
 					if (currentHeight < SEA_LEVEL)
@@ -171,12 +169,43 @@ public class PiranesiChunkGenerator extends ChunkGenerator {
 
 	public static int getNoiseTopPosition(int posX, int posZ, World world)
 	{
-		FastNoiseLite noise = NoiseCache.loadedNoise.get(1).getNoise();
-		int height = (int) (Math.abs(noise.GetNoise(posX, posZ) * 175) - 175);
+		FastNoiseLite noise = WorldGenConfiguration.layerData.get(1).getNoiseProfile().getNoise();
+		int height = (int) (Math.abs(noise.GetNoise(posX, posZ) * 100));
 		/*if (height <= 86)
 		{
 			return 300;
 		}*/
 		return height;
 	}
+	
+	@Override
+	public List<BlockPopulator> getDefaultPopulators(World world)
+	{
+		List<BlockPopulator> populators = new ArrayList<BlockPopulator>();
+		populators.add(new PiranesiTreePopulator()); // trees
+		return populators;
+	}
+	
+	/* For certain server softwares, prevent vanilla generation entirely */
+	
+	@Override
+	public boolean shouldGenerateNoise() { return false; }
+	
+	@Override
+	public boolean shouldGenerateSurface() { return false; }
+	
+	@Override
+	public boolean shouldGenerateBedrock() { return false; }
+	
+	@Override
+	public boolean shouldGenerateCaves() { return false; }
+	
+	@Override
+	public boolean shouldGenerateDecorations() { return false; }
+	
+	@Override
+	public boolean shouldGenerateMobs() { return false; }
+	
+	@Override
+	public boolean shouldGenerateStructures() { return false; }
 }

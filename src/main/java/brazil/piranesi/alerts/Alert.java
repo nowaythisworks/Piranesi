@@ -19,7 +19,7 @@ public class Alert {
 	
 	public void broadcast()
 	{
-		Bukkit.getLogger().severe(alertMessage);
+		Bukkit.getLogger().severe("[PIRANESI ALERT]" + alertMessage);
 		for (Player p : Bukkit.getServer().getOnlinePlayers())
 		{
 			if (p.hasPermission("piranesi.alerts"))

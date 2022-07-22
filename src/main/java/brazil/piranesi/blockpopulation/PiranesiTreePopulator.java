@@ -38,20 +38,8 @@ public class PiranesiTreePopulator extends BlockPopulator {
 	
 	public void grabStructureData()
 	{
-		final int r = new Random().nextInt(1000);
-		if (r <= 1) {
-			parsedBlockData = StructureLoader.buildData.get(2);
-			heightModifier = 0;
-		}
-		else if (r <= 300) {
-			parsedBlockData = StructureLoader.buildData.get(1);
-			heightModifier = 0;
-		}
-		else if (r <= 1000)
-		{
-			parsedBlockData = StructureLoader.buildData.get(0);
-			heightModifier = 0;
-		}
+		parsedBlockData = StructureLoader.buildData.get(0);
+		heightModifier = 0;
 	}
 	
 	@Override

@@ -8,7 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import brazil.piranesi.Piranesi;
-import brazil.piranesi.noise.NoiseCache;
+import brazil.piranesi.configurator.WorldGenConfiguration;
 import brazil.piranesi.noise.NoiseConstraint;
 
 public class DebugCommands implements CommandExecutor {
@@ -37,7 +37,7 @@ public class DebugCommands implements CommandExecutor {
         	int chunkX = chunk.getX();
         	int chunkZ = chunk.getZ();
         	
-        	NoiseConstraint debug = new NoiseConstraint(NoiseCache.getNoise(1).getNoise(), chunkX, chunkZ);
+        	NoiseConstraint debug = new NoiseConstraint(WorldGenConfiguration.layerData.get(1).getNoiseProfile().getNoise(), chunkX, chunkZ);
         	sender.sendMessage(ChatColor.AQUA + "Chunk Debug Stats"
         			+ "\nMin Point: " + debug.getMinimum()
         			+ "\nMax Point: " + debug.getMaximum()
