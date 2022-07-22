@@ -1,0 +1,30 @@
+{
+	"layers": {
+		0: {
+			"LayerName": "Biome Definition",
+			"NoiseType": "Cellular",
+			"Frequency": 0.015,
+			"FractalType": "None",
+			"Octaves": 5,
+			"Lacunarity": 2,
+			"FractalGain": 0.5,
+			"FractalWeightedStrength": 0,
+			"CellularDistanceFunction": "Hybrid",
+			"CellularReturnType": "CellValue",
+			"Jitter": 1
+		},
+		1: {
+			"LayerName": "Terrain Base Shape",
+			"NoiseType": "OpenSimplex2",
+			"Frequency": 0.005,
+			"FractalType": "FBm",
+			"Octaves": 5,
+			"Lacunarity": 2,
+			"FractalGain": 0.5,
+			"FractalWeightedStrength": 0,
+			"CellularDistanceFunction": "Hybrid",
+			"CellularReturnType": "CellValue",
+			"Jitter": 1
+		}
+	}
+}
